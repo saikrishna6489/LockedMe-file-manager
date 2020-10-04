@@ -1,0 +1,157 @@
+package filemanager;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
+public class Operations {
+	
+	List<String> results = new ArrayList<String>();
+	String path = "root\\";
+	private String name;
+	
+	public void setname(String n) {
+		name = n;
+	}
+	
+	public void operator() {
+		
+		Scanner scc = new Scanner(System.in);
+		int ch = 0;
+		String searchfile;
+		String addfile;
+		String deletefile;
+
+		do {
+			System.out.println("");
+			System.out.println("------------------------------------------");
+			System.out.println("             Operations Menu");
+			System.out.println("------------------------------------------");
+			System.out.println("  enter (1) to add a new file");
+			System.out.println("  enter (2) to delete a file");
+			System.out.println("  enter (3) to search file");
+			System.out.println("  enter (4) to return to main menu");
+			System.out.println("");
+			System.out.println("   * " + name.toUpperCase() + "  Please enter your appropriate choice(1-4)*");
+			System.out.println("");
+			try {
+				ch = Integer.parseInt(scc.nextLine());
+			} catch (NumberFormatException e) {
+			}
+			switch (ch) {
+			case 1:System.out.println("  ** enter the filename to add **");
+			    try {
+	    	        System.out.println();
+		            addfile = scc.nextLine();
+		            if(containsIgnoreCase(addfile,results)) {
+		            	System.out.println("   ***file already exists***");
+		            }else {
+		            	create_file(addfile);
+		            }
+	            } catch (Exception e) {
+	    	        System.out.println(e);
+	    	    }
+			    ch = 0;
+				break;
+			case 2:System.out.println("   ** enter the filename to delete **");
+		        try {
+    	            System.out.println();
+	                deletefile = scc.nextLine();
+	                if(results.contains(deletefile)) {
+	                	delete_file(deletefile);
+	                }else {
+	                	System.out.println("   ***Sorry "+deletefile+" file not exists***");
+	                }
+                } catch (Exception e) {
+    	            System.out.println(e);
+    	        }
+		        ch = 0;
+				break;
+			case 3:System.out.println("   ** enter the filename to search **");
+			    try {
+			    	System.out.println();
+				    searchfile = scc.nextLine();
+				    if (results.contains(searchfile))
+				    {
+				        System.out.println("   ***File Found!***");
+				    }else {
+				    	System.out.println("   ***File not Found!***");
+				    }
+			    } catch (Exception e) {
+			    	System.out.println(e);
+			    }
+			    ch = 0;
+				break;
+			case 4:System.out.println("");
+		        
+			    break;
+			default:System.out.println("   ***Sorry " + name.toUpperCase() + ", Invalid Choice... Choice should and must be between 1-4 only***");
+				break;
+			}
+		} while (ch != 4);
+	}
+	
+	public void file_list() {
+		try {
+		File[] files = new File("root").listFiles();
+		results.clear();
+		for (File file : files) {
+		    if (file.isFile()) {
+		        results.add(file.getName());
+		    }
+		}
+		} catch(Exception e) {
+			System.out.println("error: " + e);
+		}
+	}
+	
+	public void print_file_list() {
+		Collections.sort(results);
+	    for ( int i=0; i<results.size(); i++ ){
+	      System.out.println( "   "+(i+1)+") " + results.get(i) );
+	    }
+	}
+	
+	public void create_file(String filename) {
+		try {
+		    File myObj = new File(path+filename);
+		    if (myObj.createNewFile()) {
+		        System.out.println(name.toUpperCase() + " Your File "+ myObj.getName() +" is created successfully ");
+		        results.add(filename);
+		    } else {
+		        System.out.println("   *** Sorry "+ name.toUpperCase() +" File already exists. ***");
+		    }
+		} catch (IOException e) {
+		      System.out.println("error: " + e);
+		}
+    }
+	
+	public void delete_file(String filename) {
+	    try {
+	        File f= new File(path+filename);
+	        if(f.delete()) {
+	            System.out.println("   *** File "+ f.getName() +" is deleted successfully ***");
+	            results.remove(filename);
+	        }
+	        else
+	        {  
+	            System.out.println("  ***file deleting failed***");
+	        }
+	    }
+	    catch(Exception e) {
+	    	System.out.println("error: " + e);
+	    }
+	}
+	
+	public boolean containsIgnoreCase(String str, List<String> list){
+	    for(String i : list){
+	        if(i.equalsIgnoreCase(str))
+	            return true;
+	    }
+	    return false;
+	}
+
+}
