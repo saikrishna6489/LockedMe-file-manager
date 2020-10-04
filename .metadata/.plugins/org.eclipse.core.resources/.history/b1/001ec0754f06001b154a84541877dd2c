@@ -136,7 +136,7 @@ public class Operations {
 	public void delete_file(String filename) {
 	    try {
 	        File f= new File(path+filename);
-	        if(Files.deleteIfExists(Paths.get(pp, filename))) {
+	        if(f.delete()) {
 	            System.out.println("   *** File "+ f.getName() +" is deleted successfully ***");
 	            results.remove(filename);
 	        }

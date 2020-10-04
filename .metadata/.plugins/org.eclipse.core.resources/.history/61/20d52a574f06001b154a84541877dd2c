@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Operations {
@@ -14,7 +12,6 @@ public class Operations {
 	List<String> results = new ArrayList<String>();
 	String path = "root\\";
 	private String name;
-	String pp = "root";
 	
 	public void setname(String n) {
 		name = n;
@@ -121,8 +118,7 @@ public class Operations {
 	public void create_file(String filename) {
 		try {
 		    File myObj = new File(path+filename);
-		    if (!Files.exists(Paths.get(pp,filename))) {
-		    	Files.createFile(Paths.get(pp,filename));
+		    if (myObj.createNewFile()) {
 		        System.out.println(name.toUpperCase() + " Your File "+ myObj.getName() +" is created successfully ");
 		        results.add(filename);
 		    } else {
@@ -136,7 +132,7 @@ public class Operations {
 	public void delete_file(String filename) {
 	    try {
 	        File f= new File(path+filename);
-	        if(Files.deleteIfExists(Paths.get(pp, filename))) {
+	        if(f.delete()) {
 	            System.out.println("   *** File "+ f.getName() +" is deleted successfully ***");
 	            results.remove(filename);
 	        }
